@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -39,12 +40,13 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
   bool isRocking = false;
   final List<String> meatsList = [
-    'apple',
-    'banana',
-    'pear',
-    'peach',
-    'pear',
-    'peach'
+    '蛋炒饭',
+    '饺滋滋',
+    '奶茶',
+    '面包',
+    '今天不吃',
+    '老街称盘',
+    '衢州菜'
   ];
   final ScrollController _scrollController = ScrollController();
 
@@ -52,6 +54,18 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
+  }
+
+  int _randomItem() {
+    return Random().nextInt(meatsList.length);
+  }
+
+  void _scrollToTarget(int target) {
+    _scrollController.animateTo(
+      target * _itemExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeOut,
+    );
   }
 
   @override
@@ -141,6 +155,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   _counter++;
                   isRocking = !isRocking;
                 });
+                int target = _randomItem();
+                if (target == currentSelectedIndex) {
+                  target = _randomItem();
+                }
+                _scrollToTarget(target);
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: const Size(88, 40),
